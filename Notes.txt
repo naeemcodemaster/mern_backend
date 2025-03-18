@@ -1,0 +1,23 @@
+
+
+npm i express,dotenv,nodemon,
+npm install prisma --save-dev
+npx prisma
+npx prisma init
+npm i @prisma/client
+
+for migrate use this command in terminal
+npx prisma migrate dev --name users_table
+note: users_table is a table name, whatever your table name
+
+when you any change in the users_table schema then run the migrate again with unique name so that you can recognize later
+e.g
+npx prisma migrate dev --name users_table_make_email_unique
+
+
+
+npm i @vinejs/vine     for validation in nodejs 
+
+npm i bcryptjs   for password hashing
+
+
