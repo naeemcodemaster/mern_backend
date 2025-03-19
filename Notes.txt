@@ -19,5 +19,7 @@ npx prisma migrate dev --name users_table_make_email_unique
 npm i @vinejs/vine     for validation in nodejs 
 
 npm i bcryptjs   for password hashing
-
+npm i jsonwebtoken
+npm i express-fileupload    for file upload
+npm i uuid   for unique id generate
 
