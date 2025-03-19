@@ -15,6 +15,10 @@ e.g
 npx prisma migrate dev --name users_table_make_email_unique
 
 
+for checking db is sync with app type this in terminal
+npx prisma migrate status
+
+
 
 npm i @vinejs/vine     for validation in nodejs 
 

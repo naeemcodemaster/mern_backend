@@ -21,4 +21,16 @@ model Users {
   profile String?
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
+  News News[]
 }
+model News {
+  id Int @id @default(autoincrement()) // Removed extra parentheses
+  user_id Int
+  user Users @relation(fields: [user_id], references: [id]) // Fixed syntax
+  title String @db.VarChar(200)
+  content String
+  image String @db.VarChar(100)
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+}
+
