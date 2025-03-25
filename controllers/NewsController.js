@@ -33,11 +33,13 @@ class NewsController {
         const totalNews = await prisma.news.count();
         const totalPages = Math.ceil(totalNews / limit);
 
-        return res.json({ status: 200, news: newsTransform,metadata:{
-            totalPages,
-            currentPage:page,
-            currentLimit:limit
-        } });
+        return res.json({
+            status: 200, news: newsTransform, metadata: {
+                totalPages,
+                currentPage: page,
+                currentLimit: limit
+            }
+        });
     }
     static async store(req, res) {
         try {
@@ -95,7 +97,27 @@ class NewsController {
 
     }
     static async show(req, res) {
-
+       try {
+        const { id } = req.params;
+        const news = await prisma.news.findUnique({
+            where: {
+                id: Number(id)
+            },
+            include: {
+                user: {
+                    select: {
+                        id: true,
+                        name: true,
+                        profile: true
+                    }
+                }
+            }
+        })
+        const transFormNews = news ? NewsApiTransform.transform(news) : null;
+        return res.json({ status: 200, news: transFormNews })
+       } catch (error) {
+            return res.status(500).json({message:"Something went wrong please try again"})
+       }
     }
     static async update(req, res) {
 
