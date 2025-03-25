@@ -6,19 +6,38 @@ import NewsApiTransform from "../transform/newsApiTransform.js";
 
 class NewsController {
     static async index(req, res) {
+        const page = Number(req.query.page) || 1;
+        const limit = Number(req.query.limit) || 2;
+
+        if (page <= 0) {
+            page = 1;
+        }
+        if (limit <= 0 || limit > 100) {
+            limit = 10
+        }
+        const skip = (page - 1) * limit;
         const news = await prisma.news.findMany({
-            include:{
-                user:{
-                    select:{
-                        id:true,
-                        name:true,
-                        profile:true
+            take: limit,
+            skip: skip,
+            include: {
+                user: {
+                    select: {
+                        id: true,
+                        name: true,
+                        profile: true
                     }
                 }
             }
         });
-        const newsTransform = news?.map((item)=>NewsApiTransform.transform(item))
-        return res.json({status:200,news:newsTransform});
+        const newsTransform = news?.map((item) => NewsApiTransform.transform(item))
+        const totalNews = await prisma.news.count();
+        const totalPages = Math.ceil(totalNews / limit);
+
+        return res.json({ status: 200, news: newsTransform,metadata:{
+            totalPages,
+            currentPage:page,
+            currentLimit:limit
+        } });
     }
     static async store(req, res) {
         try {
@@ -59,11 +78,11 @@ class NewsController {
             payload.image = imageName;
             payload.user_id = user.id;
             const news = await prisma.news.create({
-                data:payload
-                
+                data: payload
+
             })
 
-            return res.json({ status:200,message:"News Created successfully",news })
+            return res.json({ status: 200, message: "News Created successfully", news })
         } catch (error) {
             console.log("Error is ", error);
             if (error instanceof errors.E_VALIDATION_ERROR) {
