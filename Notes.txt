@@ -27,3 +27,6 @@ npm i jsonwebtoken
 npm i express-fileupload    for file upload
 npm i uuid   for unique id generate
 
+npm i helmet and cors    for security purpose
+npm i express-rate-limit  for rate limit purposes
+npm i express-redis-cache   for cache db queries
