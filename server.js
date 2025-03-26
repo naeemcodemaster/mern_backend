@@ -24,8 +24,12 @@ app.get('/',(req,res)=>{
 
 // * import routers
 import apiRoutes from './routes/api.js';
+// import logger from './config/logger.js';
 app.use("/api",apiRoutes);
 
+// Logger
+// this is for testing only to check , you can use logger in your route APIs.
+// logger.info("I am just testing");
 
 app.listen(PORT,()=>{
     console.log(`Server running at Port ${PORT}`);

@@ -4,6 +4,7 @@ import { generateRandomNum, imageValidator, removeImage, uploadImage } from "../
 import prisma from "../DB/db.config.js";
 import NewsApiTransform from "../transform/newsApiTransform.js";
 import redisCache from "../DB/redis.config.js";
+import logger from "../config/logger.js";
 
 class NewsController {
     static async index(req, res) {
@@ -45,6 +46,7 @@ class NewsController {
     static async store(req, res) {
         try {
             const user = req.user;
+            // user.id;  // this is for logger testing purpose
             const body = req.body;
             const validator = vine.compile(newsSchema)
             const payload = await validator.validate(body);
@@ -90,6 +92,7 @@ class NewsController {
             return res.json({ status: 200, message: "News Created successfully", news })
         } catch (error) {
             console.log("Error is ", error);
+            logger.error(error?.message);
             if (error instanceof errors.E_VALIDATION_ERROR) {
                 // console.log(error.messages);
                 return res.status(400).json({ errors: error.messages })
