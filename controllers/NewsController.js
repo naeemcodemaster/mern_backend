@@ -3,11 +3,12 @@ import { newsSchema } from "../validations/newsValidation.js";
 import { generateRandomNum, imageValidator, removeImage, uploadImage } from "../utils/helper.js";
 import prisma from "../DB/db.config.js";
 import NewsApiTransform from "../transform/newsApiTransform.js";
+import redisCache from "../DB/redis.config.js";
 
 class NewsController {
     static async index(req, res) {
         const page = Number(req.query.page) || 1;
-        const limit = Number(req.query.limit) || 2;
+        const limit = Number(req.query.limit) || 10;
 
         if (page <= 0) {
             page = 1;
@@ -75,6 +76,16 @@ class NewsController {
                 data: payload
 
             })
+
+            // remove cache
+            redisCache.del("/api/news", (err, deleted) => {
+                if (err) {
+                    console.error("Error deleting cache:", err);
+                } else {
+                    console.log("Cache deleted:", deleted);
+                }
+            });
+            
 
             return res.json({ status: 200, message: "News Created successfully", news })
         } catch (error) {

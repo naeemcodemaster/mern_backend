@@ -30,3 +30,10 @@ npm i uuid   for unique id generate
 npm i helmet and cors    for security purpose
 npm i express-rate-limit  for rate limit purposes
 npm i express-redis-cache   for cache db queries
+
+
+for redis use docker open docker see image, if redis image available then only go to container if redis there just start if not then type this command in terminal to run the redis inside continaer from image .
+command:   docker run -d --name redis -p 6379:6379 -p 8001:8001 redis/redis-stack (enter)
+
+
+npm i winston  (for logging purpose)
