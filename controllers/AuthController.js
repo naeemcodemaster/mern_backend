@@ -3,6 +3,9 @@ import vine, { errors } from "@vinejs/vine";
 import { loginSchema, registerSchema } from "../validations/AuthValidation.js";
 import bcrypt from "bcryptjs";
 import jwt from 'jsonwebtoken'
+import { sendEmail } from "../config/mailer.js";
+import logger from "../config/logger.js";
+import { emailQueue, EmailQueueName } from "../jobs/SendEmailQueueJob.js";
 class AuthController {
     static async register(req, res) {
         try {
@@ -85,6 +88,38 @@ class AuthController {
             } else {
                 return res.status(500).json({ state: 500, message: "Something went wrong, Please try again!" })
             }
+        }
+    }
+
+
+
+    // Send Test Email
+    static async sendTestEmail(req,res){
+        try {
+            const {email} = req.query;
+            const payload = [
+                {
+                    toEmail:email,
+                    subject:"First Hey Testing Email",
+                    body:"<h2>Testing Email</h2>"
+                },
+
+                {
+                    toEmail:email,
+                    subject:"Second Hey Testing Email",
+                    body:"<h2>Testing Email 2</h2>"
+                }
+
+            ] 
+
+            // await sendEmail(payload.toEmail,payload.subject,payload.body)
+            // await sendEmail(payload.toEmail,"second email","second email body")
+            // return res.status(200).json({message:"Email send successfully"})
+            await emailQueue.add(EmailQueueName,payload)
+            return res.status(200).json({message:"Job added successfully"})
+        } catch (error) {
+            logger.error({type:"Email Error",body:error})
+            return res.status(500).json({message:"Something went wrong, Please try again later"})
         }
     }
 }

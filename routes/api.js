@@ -8,6 +8,7 @@ const router = Router();
 
 router.post("/auth/register",AuthController.register)
 router.post("/auth/login",AuthController.login)
+router.get('/send-email',AuthController.sendTestEmail);
 
 
 // Profile routes
@@ -21,5 +22,6 @@ router.post('/news',authMiddleware,NewsController.store)
 router.get('/news/:id',NewsController.show)
 router.put('/news/:id',authMiddleware,NewsController.update)
 router.delete('/news/:id',authMiddleware,NewsController.destroy)
+
 
 export default router;

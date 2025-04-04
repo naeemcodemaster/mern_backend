@@ -27,6 +27,11 @@ import apiRoutes from './routes/api.js';
 // import logger from './config/logger.js';
 app.use("/api",apiRoutes);
 
+
+// Job import
+import './jobs/index.js'
+
+
 // Logger
 // this is for testing only to check , you can use logger in your route APIs.
 // logger.info("I am just testing");
