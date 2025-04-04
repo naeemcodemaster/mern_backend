@@ -37,3 +37,11 @@ command:   docker run -d --name redis -p 6379:6379 -p 8001:8001 redis/redis-stac
 
 
 npm i winston  (for logging purpose)
+
+
+npm i nodemailer for email 
+Note (in this project we are using brevo as a service as well)
+
+Note: ak sat bhot sari email jb bejy gy tu server py load parhy ga, or server kuch miliseconds me request check krta hai and close krdeta hai, but agr email zyada hue tu server time lgaye ga, tu phr es ka mtlb hamari email nhi jaye ge.tu hum bullmq use kry gy es liay background me emails jaye ge main thread py koe effect nhi hoga.
+
+$ npm install bullmq    for queue all the emails
